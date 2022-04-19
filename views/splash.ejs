@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<HTML>
+    <head>
+        <link rel = "stylesheet" href = "stylesheets/splash.css">
+        <link rel = "icon" href = "imgs/robber.png">
+        <title>
+            Library Heist
+        </title>
+    </head>
+    <body>
+        <div>
+            <img src = "imgs/Logo.png" alt = "logo" width = "50%" height="50%">
+            <img class = "innerImage" src = "imgs/robber.png" width = "5%" height = "5%">
+        </div>
+        <br>
+        <table class = "menu">
+            <tr>
+                <td> <div class = "container goToRight" id = "completed">
+                    <img src = "imgs/gamescompleted.png" alt = "gamescompleted" width = "70%" height="70%">
+                    <div class = "centeredText"><%= gamesCompleted %></div>
+                </div></td>
+                <td><div class = "container" id = "initialized">
+                    <img src = "imgs/gamesInitialized.png" alt = "gamesInitialized" width = "70%" height="70%">
+                    <div class = "centeredText"><%= gamesInitialized %></div>
+                </div></td>
+                <td><div class = "container goToLeft" id = "online">
+                    <img src = "imgs/usersonline.png" alt = "usersonline" width = "70%" height="70%">
+                    <div class = "centeredText"><%= usersOnline %></div>
+                </div></td>
+            </tr>      
+            <tr>
+                <td><img id = "story" class = "imageButton goToRight" src = "imgs/storybutton.png" alt = "story" width = "70%" height = "70%" onclick = openStoryModal()></td>
+                <td><form id = "play" action="/play" method="get">
+                    <input type="image" class= "imageButton" name="submit" src="imgs/playbutton.png" alt="play" style = "width: 70%; height: 70%">
+                </form></td>
+                <td><img id = "rules" class = "imageButton goToLeft" src = "imgs/rulesbutton.png" alt = "rules" width = "70%" height = "70%" onclick = openRulesModal()></td>
+            </tr>
+        </table>
+        <br>
+        <div>
+           
+        </div>
+        <!-- The Modal for story-->
+        <div id="storyModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close" onclick = closeStoryModal()>&times;</span>
+                <p>TUDelft Library, the pinnacle of modern day engineering, has now been tasked with guarding the “sacred binary texts”. The deepest, darkest secrets of computer science, that could spell the end of the world as we know it when placed in the wrong hands. Hackers from all around the world have set their sights on this prize, and will go to any lengths to acquire these sacred texts. Luckily for the world, the texts are guarded by real-time colour-encryption, the most sophisticated encryption method that exists currently. The question remains, can you uncover these secrets? Play this game with one more player to find out! </p>
+            </div>
+        </div>
+        <!-- The Modal for rules-->
+        <div id="rulesModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close" onclick = closeRulesModal()>&times;</span>
+                <p>
+                    Mastermind is a two player game, where players take turns making and guessing a code comprised of 6 colours. In this version, the “hacker” will try to decrypt the code that the “encryptor” has made, and has 10 turns to do so. Once the “encryptor” has made the code, the “hacker” will make guesses and be provided the amount of colours that are correct and correctly placed, as well as the amount of colours that are correct but placed wrongly within the code. In the event that the “hacker” decrypts the code within 10 turns, the “hacker” wins. Otherwise, the “encryptor” claims the victory.                    </p>
+            </div>
+        </div>
+        <script src = "scripts/splash.js" defer></script>
+        
+    </body>
+</HTML>

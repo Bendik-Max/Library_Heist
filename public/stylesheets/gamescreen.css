@@ -1,0 +1,119 @@
+/*entire body*/
+body {
+    font-family: sans-serif;
+    background-size: cover;
+    background-image: radial-gradient(circle, rgba(32,80,39,1) 0%, rgba(0,0,0,1) 97%);
+}
+
+/*tables in the right section*/
+.rightTable {
+    width: 300px;
+    table-layout: fixed;
+}
+
+.gr {
+    display: grid;
+}
+
+/*text boxes*/
+.textBox {
+    background-color: #202020;
+    border: 1px solid white;
+    padding: 4px;
+    color: white;
+}
+
+/*div get the left section more to the right*/
+.outlineRight {
+    margin-left: 150px;
+    margin-top: 40px;
+}
+
+/*get the colours and confirm more to the right*/
+.outlineRightFurther {
+    margin-left: 425px;
+    margin-top: 10px;
+}
+
+/*getting colours and confirm on same line*/
+.colourButtons {
+    float: left;
+}
+
+/*getting colours and confirm on same line and more positioning etc*/
+.confirmButton {
+    float: left;
+    margin-left: 5px;
+    width: 20%;
+    height: 20%;
+}
+
+/*left section of page*/
+.sectionLeft { 
+    width: 70%;
+    float: left; /*sections appear next to eachother*/
+}
+
+/*right section of page*/
+.sectionRight {
+    margin-top: 40px;
+    width: 30%;
+    align-items: center;
+    float: right;
+}
+
+/*entire command terminal*/
+.cmd {
+    margin-left: auto;
+    margin-right: 0;
+    border: 10px;
+    border-color: grey;
+    overflow-y: auto;
+    background-color: black;
+    width: 750px;
+    height: 451px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.cmdHeadTools {
+    width: 30px;
+    text-align: center;
+    table-layout: fixed;
+}
+
+/*head of the command terminal*/
+.cmdHead {
+    background-color: #adadad;
+    height: 5px;
+    width: 770px;
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    table-layout: fixed;
+    display: inline-table;
+    user-select: none;
+}
+
+/*body row of the command terminal*/
+.cmdBody {
+    color: white;
+    vertical-align: text-bottom;
+    text-align: left;
+    display: inline-block;
+    width: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 20px;
+    table-layout: fixed;
+    border: none;
+}
+
+/*wrap around command terminal*/
+.cmdWrap {
+    height: 450px;
+    overflow-y: scroll;
+    display: inline-block;
+}

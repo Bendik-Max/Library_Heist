@@ -1,0 +1,42 @@
+body{
+    background-color: aqua;
+    background-image: url(imgs/background.png);
+    text-align: center;
+    
+}
+
+.imageButton:hover{
+    animation-name: enlarge;
+    animation-duration: 1s;
+}
+
+@keyframes enlarge{
+    0%{
+        width: 13%;
+        height: 13%;
+    }
+    100%{
+        width: 17%;
+        height: 17%;
+    }
+}
+
+.innerImage{
+    position: relative;
+    bottom: 175px;
+}
+
+.innerImage{
+    animation-name: run;
+    animation-duration: 3s;
+}
+
+@keyframes run{
+    0% {
+        margin-left: 0%;
+    }
+    100% {
+        margin-left: 100%;
+    }
+}
+

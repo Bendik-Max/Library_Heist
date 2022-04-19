@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "stylesheets/gamescreen.css">
+        <link rel = "icon" href = "imgs/robber.png">
+        <title>Library Heist</title>
+    </head>
+    <body>
+        <!--We divide the page into two sections using two divs with different sizes-->
+        <div class = "sectionLeft">
+            <div class = "outlineRight">
+                 <!--upper bar of cmd-->
+                <br><br><br>
+                <table class = "cmdHead">
+                    <tr> 
+                        <th>CMD</th>
+                        <th class = "cmdHeadTools">-</th>
+                        <th class = "cmdHeadTools">[]</th>
+                        <th class = "cmdHeadTools">X</th>
+                    </tr>
+                </table>
+                <!--wrap around "body" of cmd-->
+                <div class = "cmdWrap">
+                    <table class = "cmd" id = "table">
+                        <!--This is where inserted text will appear-->
+                        <!--This will contain the current code or guess-->
+                        <tr id = "insertBeforePlace">
+                            <td id = "codeOrGuess" class = "cmdBody"></td>
+                        </tr>
+                        <tr>
+                            <td id = "currentTyping" class = "cmdBody"></td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div class = "outlineRightFurther">
+                    <!--The coloured buttons-->
+                    <table class = "textBox colourButtons">
+                        <tr>
+                            <td><br><br></td> <!--This should be removed later it's for positioning-->
+                            <td><img src = "imgs/red.png" id = "red" alt = "red" width = "20" height="20"></td>
+                            <td><img src = "imgs/orange.png" id = "orange" alt = "orange" width = "20" height="20"></td>
+                            <td><img src = "imgs/yellow.png" id = "yellow" alt = "yellow" width = "20" height="20"></td>
+                            <td><img src = "imgs/green.png" id = "green" alt = "green" width = "20" height="20"></td>
+                            <td><img src = "imgs/blue.png" id = "blue" alt = "blue" width = "20" height="20"></td>
+                            <td><img src = "imgs/purple.png" id = "purple" alt = "purple" width = "20" height="20"></td>
+                            <td><img src = "imgs/white.png" id = "white" alt = "white" width = "20" height="20"></td>
+                        </tr>
+                    </table>
+                    <!--Confirm button-->
+                    <img class = "confirmButton"  id = "confirmButton" src = "imgs/confirmbutton.png" alt = "confirm" width = "15%" height= "15%">
+                </div>
+            </div>
+        </div>
+        <div class = "sectionRight">
+            <br><br><br>
+            <div class = "gr">
+            <!--Turn-->
+            <table class = "textBox rightTable">
+                <tr><th>Turn</th></tr>
+                <tr><td id = "turn"></td></tr>
+            </table>
+            <br><br><br>
+            <!--Roles-->
+            <table class = "textBox rightTable">
+                <tr><th>Roles</th></tr>
+                <tr><td id = "hacker">Hacker: </td></tr>
+                <tr><td id = "encryptor">Encryptor: </td></tr>
+            </table>
+            <br><br><br>
+            <img src = "imgs/Logo.PNG" alt = "library heist logo" width = "80%" heigth = "80%">
+            </div>
+        </div>
+        <!--Script for gamescreen-->
+       <script src = "scripts/gamescreen.js" defer></script>
+        <script src="scripts/config.js"></script>
+        <script src="scripts/messages.js"></script>
+    </body>
+</html>
+
