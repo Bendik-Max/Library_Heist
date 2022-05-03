@@ -1,31 +1,19 @@
-//const gameStatus = require("../statTracker");
-console.log("opened gamescreen.js");
-
-
-
 const GameState = function(socket){
+    this.socket = socket; //websocket*/
     let colours = ["red", "orange", "yellow", "green", "blue", "purple", "white"];
-    this.data = []; //current typing in cmd
+    for(let bool of [this.codeMade, this.guessMade, this.tryConfirmCode, this.tryConfirmGuess, this.disable, this.hackerWon]) bool = false;
+    this.code = [];
+    this.guess = [];
+    this.data = [];
     this.currentTyping = document.getElementById("currentTyping");
-    this.code = []; //the current code
-    this.guess = []; //the current guess
-    this.codeMade = false; //if the code has been made
-    this.guessMade = false; //if the guess has been made
-    this.tryConfirmGuess = false; //if possible to confirmGuess
-    this.tryConfirmCode = false; //if possible to confirmCode
     this.roleTurn = "Encryptor"; //the role of the player who has the turn
     this.turn = 0; //current turn of hacker
-    this.disable = false;
     this.confirmButton = document.getElementById("confirmButton");
     for(let i = 0; i < colours.length; i++) {
         this[colours[i]] = document.getElementById(`${colours[i]}`);
     }
-    this.socket = socket; //websocket*/
     this.player = null;
-    this.hackerWon = false;
-    //getting input from terminal   
 };
-
 
 GameState.prototype.setupRed = function() {
     this.red.onclick = function() {
@@ -35,9 +23,7 @@ GameState.prototype.setupRed = function() {
 
 GameState.prototype.setupRoleTurn = function(w) {
     this.roleTurn = w;
-    }.bind(this);
-
-
+}.bind(this);
 
 GameState.prototype.setupOrange = function() {
     this.orange.onclick = function() {
@@ -133,8 +119,7 @@ GameState.prototype.terminalSetup = function() {
                 this.data.pop();
                 this.updateCurrentTyping.bind(this)();
             }
-        }
-        else {
+        } else {
             if(String(key).length === 1) { //only add to data if valid character
                 this.data.push(String(key));
                 this.updateCurrentTyping.bind(this)();
@@ -276,37 +261,90 @@ GameState.prototype.checkGuess = function() {
         this.printText("The guess isn't valid to be checked");
     } else {
         this.printText(`Turn ${String(this.turn + 1)}: ${this.codeOrGuessToHTML("guess")}`);
-        console.log("did we get here? ofc")
         this.guessMade = false;
         //figure out how many completely correct and right colours
-        console.log(copycode);
-        console.log(this.code);
-        console.log(copycode);
+        let counts = this.amountColours();
         let correctPlace = 0;
         let correctColours = 0;
-        console.log("pre-for loop");
-        for(let i = 0; i < this.guess.length; i++) {
-            if(copycode[i] === this.guess[i]) correctPlace++;
-            else if(copycode.includes(this.guess[i])) correctColours++;
-            copycode[i] = "done"; //now this index will be ignored
+        for(let i = 0; i < this.guess.length; i++) { //take care of correct place
+            const col = this.guess[i];
+            if(copycode[i] === col) {
+                correctPlace++;
+                switch(col) {
+                    case "red": counts[0] = counts[0] - 1; break;
+                    case "orange": counts[1] = counts[1] - 1; break;
+                    case "yellow": counts[2] = counts[2] -1;; break;
+                    case "green": counts[3] = counts[3] - 1; break;
+                    case "blue": counts[4] = counts[4] - 1; break;
+                    case "purple": counts[5] = counts[5] - 1; break;
+                    case "white": counts[6] = counts[6] - 1; break;
+                }
+                copycode[i] = "correct";
+            }
         }
-        console.log("post for loop");
+        for(let col of this.guess) { //take care of wrong place 
+            if(col === "correct") continue;
+            let shouldAdd = false;
+            switch(col) {
+                case "red": 
+                    if(counts[0] > 0){
+                        counts[0]--;
+                        shouldAdd = true;
+                    } 
+                    break;
+                case "orange": 
+                    if(counts[1] > 0){
+                        counts[1]--;
+                        shouldAdd = true;
+                    } 
+                    
+                    break;
+                case "yellow":
+                    if(counts[2] > 0){
+                        counts[2]--;
+                        shouldAdd = true;
+                    }
+                    break;
+                case "green":
+                    if(counts[3] > 0){
+                        counts[3]--;
+                        shouldAdd = true;
+                    }
+                    break;
+                case "blue":
+                    if(counts[4] > 0){
+                        counts[4]--;
+                        shouldAdd = true;
+                    }
+                    break;
+                case "purple":
+                    if(counts[5] > 0){
+                        counts[5]--;
+                        shouldAdd = true;
+                    }
+                    break;
+                case "white":
+                    if(counts[6] > 0){
+                        counts[6]--;
+                        shouldAdd = true;
+                    }
+                    break;
+            }
+            if(shouldAdd) correctColours++;
+        }
         if(correctPlace === 6) {
             this.printText("You cracked the code!");
             this.hackerWon = true;
             /*send this to the server*/
             let win = Messages.O_GAME_WON_BY;
             win.data = 2;
-            console.log("the message works");
             this.disable = true;
             this.socket.send(JSON.stringify(win));
-        }
-        else if(correctColours === 1) {
+        } else if(correctColours === 1) {
             this.printText(`You got ${correctColours} colour correct but in the wrong place and ${correctPlace} completely correct`);
         } else {
             this.printText(`You got ${correctColours} colours correct but in the wrong place and ${correctPlace} completely correct`);
         }
-        console.log("we got here too!");
         this.turn++;
         if(this.turn > 9){
             this.printText("You lose evil hacker scum!");
@@ -327,29 +365,14 @@ GameState.prototype.amountColours = function() {
     let colours = [0, 0, 0, 0, 0, 0, 0] //red, orange, yellow, green, blue, purple, white 
     for(let i = 0; i < this.code.length; i++) {
         switch(this.code[i]) {
-            case "red": 
-                colours[0]++;
-                break;
-            case "orange": 
-                colours[1]++;
-                break;
-            case "yellow": 
-                colours[2]++;
-                break;
-            case "green": 
-                colours[3]++;
-                break;
-            case "blue": 
-                colours[4]++;
-                break;
-            case "purple": 
-                colours[5]++;
-                break;
-            case "white": 
-                colours[6]++;
-                break;
-            default: 
-                break;
+            case "red": colours[0]++; break;
+            case "orange": colours[1]++; break;
+            case "yellow": colours[2]++; break;
+            case "green": colours[3]++; break;
+            case "blue": colours[4]++; break;
+            case "purple": colours[5]++; break;
+            case "white": colours[6]++; break;
+            default: break;
         }
     }
     return colours;
@@ -384,7 +407,6 @@ GameState.prototype.addToCode = function(input) {
 
 //add input to guess if possible
 GameState.prototype.addToGuess = function(input) {
-    console.log(this.disable);
     if(this.disable) return;
     if(!this.codeMade) {
         this.printText("The code has to be made before you can add to your guess");
@@ -424,15 +446,12 @@ GameState.prototype.updateCurrentTyping = function() {
 
 
 (function setup() {
-    console.log("started setup");
     const socket = new WebSocket(Setup.WEB_SOCKET_URL);
-    console.log("socket made");
 
     const gs = new GameState(socket);
 
     socket.onmessage = function(event){
         let incomingMSG = JSON.parse(event.data);
-        console.log(incomingMSG);
         
         if(incomingMSG.type == Messages.T_GAME_OVER)  {
             gs.printText("You've won by a forfeit or a loss of connection! Consider yourself lucky!");
