@@ -26,12 +26,17 @@ const GameState = function(socket){
     //getting input from terminal   
 };
 
+GameState.prototype.setGuess = function(w){
+    this.guess = w;
+}
+
 
 GameState.prototype.setupRed = function() {
     this.red.onclick = function() {
         this.makeCodeOrGuess.bind(this)("red");
     }.bind(this);
 }
+
 
 GameState.prototype.setupRoleTurn = function(w) {
     this.roleTurn = w;
@@ -157,7 +162,10 @@ GameState.prototype.codeOrGuessToHTML = function(cg) {
         return result;
     } else {
         result = "";
+        console.log(this.guess);
+        console.log(this.guess.length);
         for(let i = 0; i < this.guess.length; i++) {
+            console.log("adding");
             result += `<img src = "imgs/${this.guess[i]}.png" alt = "${this.guess[i]}" width = 20 heigth = 20>`;
         }
         return result;
@@ -279,8 +287,6 @@ GameState.prototype.checkGuess = function() {
         console.log("did we get here? ofc")
         this.guessMade = false;
         //figure out how many completely correct and right colours
-        console.log(copycode);
-        console.log(this.code);
         console.log(copycode);
         let correctPlace = 0;
         let correctColours = 0;
@@ -491,7 +497,8 @@ GameState.prototype.updateCurrentTyping = function() {
         }
         
         if(incomingMSG.type == Messages.T_MAKE_A_GUESS){   
-            gs.printText(`Hacker is on turn ${gs.turn++ + 1}`);
+            gs.setGuess(incomingMSG.data);
+            gs.printText(`Turn ${gs.turn++ + 1}: ${gs.codeOrGuessToHTML("guess")}`);
             gs.updateTurnTable(gs.roleTurn);
         }
         //Player A: wait for guesses and update the board ...
