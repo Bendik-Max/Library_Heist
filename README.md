@@ -19,5 +19,5 @@ Mastermind with a twist
 15. Enjoy.
 
 # Contributors
-Bendik Christensen
-Max de Groot
+Bendik Christensen 
+\Max de Groot
