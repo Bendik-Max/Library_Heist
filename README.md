@@ -20,4 +20,5 @@ Mastermind with a twist
 
 # Contributors
 Bendik Christensen 
-\Max de Groot
+
+Max de Groot
