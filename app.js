@@ -157,8 +157,6 @@ con.on("message", function incoming(message) {
       }
       //game was won by somebody, update statistics
       gameStatus.gamesCompleted++;
-      gameStatus.usersOnline--;
-      gameStatus.usersOnline--;
     }
   }
 });
@@ -169,6 +167,7 @@ con.on("close", function(code) {
    * source: https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
    */
   console.log(`${con["id"]} disconnected ...`);
+  console.log(code);
 
   if (code == 1001) {
     /*
