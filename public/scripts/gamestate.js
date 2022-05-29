@@ -269,9 +269,10 @@ export default class GameState {
             this.terminal.printText(`Turn ${String(this.turn + 1)}: ${this.codeOrGuessToHTML("guess")}`);
             this.guessMade = false;
             //figure out how many completely correct and right colours
-            const counts = this.amountColours(copycode);
-            let correctPlace = this.inCorrectPlace(this.guess, copycode, counts);
-            let correctColours = this.rightColourWrongPlace(this.guess, counts);
+            const counts = this.amountColours(this.code);
+            const countguess = this.amountColours(this.guess);
+            let correctPlace = this.inCorrectPlace(this.guess, copycode, counts, countguess);
+            let correctColours = this.rightColourWrongPlace(this.guess, counts, countguess);
             if(correctPlace === 6) {
                 this.terminal.printText("You cracked the code!");
                 this.hackerWon = true;
@@ -300,22 +301,23 @@ export default class GameState {
     }
 
     //find out how many colours are in the correct place
-    inCorrectPlace(someGuess, someCode, counts) {
+    inCorrectPlace(someGuess, someCode, counts, countguess) {
         if(someGuess.length != 6) throw new Error('Guess must be 6 colours');
         if(someCode.length != 6) throw new Error('Code must be 6 colours');
         let correctPlace = 0;
+        console.log(countguess);
         for(let i = 0; i < someGuess.length; i++) { //take care of correct place
             const col = someGuess[i];
             if(someCode[i] === col) {
                 correctPlace++;
                 switch(col) {
-                    case "red": counts[0] = counts[0] - 1; break;
-                    case "orange": counts[1] = counts[1] - 1; break;
-                    case "yellow": counts[2] = counts[2] -1;; break;
-                    case "green": counts[3] = counts[3] - 1; break;
-                    case "blue": counts[4] = counts[4] - 1; break;
-                    case "purple": counts[5] = counts[5] - 1; break;
-                    case "white": counts[6] = counts[6] - 1; break;
+                    case "red": counts[0] = counts[0] - 1; countguess[0] = countguess[0] - 1; break;
+                    case "orange": counts[1] = counts[1] - 1; countguess[1] = countguess[1] - 1; break;
+                    case "yellow": counts[2] = counts[2] -1; countguess[2] = countguess[2] - 1; break;
+                    case "green": counts[3] = counts[3] - 1; countguess[3] = countguess[3] - 1; break;
+                    case "blue": counts[4] = counts[4] - 1; countguess[4] = countguess[4] - 1; break;
+                    case "purple": counts[5] = counts[5] - 1; countguess[5] = countguess[5] - 1; break;
+                    case "white": counts[6] = counts[6] - 1; countguess[6] = countguess[6] - 1; break;
                 }
                 someCode[i] = "correct";
             }
@@ -324,7 +326,7 @@ export default class GameState {
     }
 
     //find out how many colours are correct but in the wrong place
-    rightColourWrongPlace(someGuess, counts) {
+    rightColourWrongPlace(someGuess, counts, countguess) {
         if(someGuess.length != 6) throw new Error('Guess must be 6 colours');
         let correctColours = 0;
         for(let col of someGuess) { //take care of wrong place 
@@ -332,44 +334,44 @@ export default class GameState {
             let shouldAdd = false;
             switch(col) {
                 case "red": 
-                    if(counts[0] > 0){
+                    if(counts[0] > 0 && countguess[0] > 0){
                         counts[0]--;
                         shouldAdd = true;
                     } 
                     break;
                 case "orange": 
-                    if(counts[1] > 0){
+                    if(counts[1] > 0 && countguess[1] > 0){
                         counts[1]--;
                         shouldAdd = true;
                     } 
                     
                     break;
                 case "yellow":
-                    if(counts[2] > 0){
+                    if(counts[2] > 0 && countguess[2] > 0){
                         counts[2]--;
                         shouldAdd = true;
                     }
                     break;
                 case "green":
-                    if(counts[3] > 0){
+                    if(counts[3] > 0 && countguess[3] > 0){
                         counts[3]--;
                         shouldAdd = true;
                     }
                     break;
                 case "blue":
-                    if(counts[4] > 0){
+                    if(counts[4] > 0 && countguess[4] > 0){
                         counts[4]--;
                         shouldAdd = true;
                     }
                     break;
                 case "purple":
-                    if(counts[5] > 0){
+                    if(counts[5] > 0 && countguess[5] > 0){
                         counts[5]--;
                         shouldAdd = true;
                     }
                     break;
                 case "white":
-                    if(counts[6] > 0){
+                    if(counts[6] > 0 && countguess[6] > 0){
                         counts[6]--;
                         shouldAdd = true;
                     }

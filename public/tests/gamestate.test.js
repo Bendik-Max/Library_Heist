@@ -57,21 +57,24 @@ test('inCorrectPlace all correct', () => {
     let guess = ["red", "orange", "yellow", "green", "blue", "purple"];
     let code = ["red", "orange", "yellow", "green", "blue", "purple"];
     let counts = g1.amountColours(code);
-    expect(g1.inCorrectPlace(guess, code, counts)).toBe(6);
+    let countguess = g1.amountColours(guess);
+    expect(g1.inCorrectPlace(guess, code, counts, countguess)).toBe(6);
 })
 
 test('inCorrectPlace one correct', () => {
     let guess = ["white", "white", "white", "white", "white", "white"];
     let code = ["white", "orange", "yellow", "green", "blue", "purple"];
     let counts = g1.amountColours(code);
-    expect(g1.inCorrectPlace(guess, code, counts)).toBe(1);
+    let countguess = g1.amountColours(guess);
+    expect(g1.inCorrectPlace(guess, code, counts, countguess)).toBe(1);
 })
 
 test('inCorrectPlace no correct', () => {
     let guess = ["red", "orange", "yellow", "green", "blue", "purple"];
     let code = ["orange", "yellow", "green", "blue", "purple", "red"];
-    let counts = g1.amountColours(code)
-    expect(g1.inCorrectPlace(guess, code, counts)).toBe(0);
+    let counts = g1.amountColours(code);
+    let countguess = g1.amountColours(guess);
+    expect(g1.inCorrectPlace(guess, code, counts, countguess)).toBe(0);
 })
 
 test('rightColourWrongPlace guess not length 6', () => {
@@ -90,24 +93,27 @@ test('rightColourWrongPlace two, ignore colours not in there', () => {
     const code = ["orange", "red", "red", "white", "white", "white"];
     const guess = ["red", "orange", "yellow", "green", "blue", "purple"];
     const counts = g1.amountColours(code);
-    g1.inCorrectPlace(guess, code, counts);
-    expect(g1.rightColourWrongPlace(guess, counts)).toBe(2);
+    const countguess = g1.amountColours(guess);
+    g1.inCorrectPlace(guess, code, counts, countguess);
+    expect(g1.rightColourWrongPlace(guess, counts, countguess)).toBe(2);
 })
 
 test('rightColourWrongPlace all', () => {
     const code = ["red", "orange", "yellow", "green", "blue", "white"];
     const guess = ["orange", "yellow", "green", "blue", "white", "red"];
     const counts = g1.amountColours(code);
-    g1.inCorrectPlace(guess, code, counts);
-    expect(g1.rightColourWrongPlace(guess, counts)).toBe(6);
+    const countguess = g1.amountColours(guess);
+    g1.inCorrectPlace(guess, code, counts, countguess);
+    expect(g1.rightColourWrongPlace(guess, counts, countguess)).toBe(6);
 })
 
 test('rightColourWrongPlace duplicates', () => { 
     const code = ["red", "red", "orange", "orange", "blue", "blue"];
     const guess = ["orange", "correct", "correct", "green", "correct", "orange"];
     const counts = g1.amountColours(code);
-    g1.inCorrectPlace(guess, code, counts);
-    expect(g1.rightColourWrongPlace(guess, counts)).toBe(2);
+    const countguess = g1.amountColours(guess);
+    g1.inCorrectPlace(guess, code, counts, countguess);
+    expect(g1.rightColourWrongPlace(guess, counts, countguess)).toBe(2);
 })
 
 test('checkGuess code not made', () => {
