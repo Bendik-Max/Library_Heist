@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js 3000"
+    "start": "node app.js 3000",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -15,6 +16,9 @@
     "ws": "^8.4.2"
   },
   "devDependencies": {
-    "jest": "^28.1.0"
+    "@babel/plugin-transform-modules-commonjs": "^7.18.0",
+    "babel": "^6.23.0",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0"
   }
 }
