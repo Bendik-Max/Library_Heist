@@ -5,9 +5,9 @@ const websocket = require("ws");
 const game = require("./game");
 
 if(process.argv.length < 3) {
-    console.log("Error: expected a port as argument (eg. 'node app.js 3000').");
-    process.exit(1);
-  }
+  console.log("Error: expected a port as argument (eg. 'node app.js 3000').");
+  process.exit(1);
+}
 
 const port = process.argv[2];
 const app = express();
@@ -37,15 +37,15 @@ const websockets = {}; //property: websocket, value: game
  */
 setInterval(function() {
     for (let i in websockets) {
-      if (Object.prototype.hasOwnProperty.call(websockets,i)) {
-        let gameObj = websockets[i];
-        //if the gameObj has a final status, the game is complete/aborted
-        if (gameObj.finalStatus != null) {
-          delete websockets[i];
-        }
+    if (Object.prototype.hasOwnProperty.call(websockets,i)) {
+      let gameObj = websockets[i];
+      //if the gameObj has a final status, the game is complete/aborted
+      if (gameObj.finalStatus != null) {
+        delete websockets[i];
       }
     }
-  }, 50000);
+  }
+}, 50000);
 
 /*Initialize new game and increment the amount of games initialized*/
 
@@ -58,45 +58,45 @@ let connectionID = 0; //each websocket receives a unique ID
 
 
 wss.on("connection", function connection(ws) {
-    /*
-     * two-player game: every two players are added to the same game
-     */
-    console.log("connected");
-    gameStatus.usersOnline++;
-    const con = ws;
-    con["id"] = connectionID++;
-    const playerType = currentGame.addPlayer(con);
-    websockets[con["id"]] = currentGame;
+  /*
+   * two-player game: every two players are added to the same game
+   */
+  console.log("connected");
+  gameStatus.usersOnline++;
+  const con = ws;
+  con["id"] = connectionID++;
+  const playerType = currentGame.addPlayer(con);
+  websockets[con["id"]] = currentGame;
     
-    
-    const gameID = currentGame.getGameID();
+  const gameID = currentGame.getGameID();
 
-    console.log(
-      `Player ${con["id"]} placed in game ${gameID} as ${playerType}`
-    );
-/*
+  console.log(
+    `Player ${con["id"]} placed in game ${gameID} as ${playerType}`
+  );
+  
+  /*
    * inform the client about its assigned player type
    */
-//con.send(playerType == "1" ? messages.S_PLAYER_1: messages.S_PLAYER_2);
-con.send(playerType == "1" ? JSON.stringify(messages.O_PLAYER_1): JSON.stringify(messages.O_PLAYER_2));
+  con.send(playerType == "1" ? JSON.stringify(messages.O_PLAYER_1): JSON.stringify(messages.O_PLAYER_2));
 
-/*
- * client B receives the target word (if already available)
- */
-if (playerType == 2 && currentGame.getCode() != null) {
-  let msg = messages.O_TARGET_CODE;
-  msg.data = currentGame.getCode();
-  con.send(JSON.stringify(msg));
-}
+  /*
+   * client B receives the target word (if already available)
+   */
+  if (playerType == 2 && currentGame.getCode() != null) {
+    let msg = messages.O_TARGET_CODE;
+    msg.data = currentGame.getCode();
+    con.send(JSON.stringify(msg));
+  }
 
-/*
- * once we have two players, there is no way back;
- * a new game object is created;
- * if a player now leaves, the game is aborted (player is not preplaced)
- */
-if (currentGame.hasTwoConnectedPlayers()) {
-  currentGame = new game(gameStatus.gamesInitialized++);
-}
+  /*
+  * once we have two players, there is no way back;
+  * a new game object is created;
+  * if a player now leaves, the game is aborted (player is not preplaced)
+  */
+  if (currentGame.hasTwoConnectedPlayers()) {
+    currentGame = new game(gameStatus.gamesInitialized++);
+  }
+})
 
 /*
  * message coming in from a player:
@@ -185,30 +185,8 @@ con.on("close", function(code) {
 
       let over = messages.O_GAME_OVER;
       gameObj.playerA.send(JSON.stringify(over));
-      gameObj.playerB.send(JSON.stringify(over));
-
-
-      /*try {
-        gameObj.playerB.close();
-        gameObj.playerA.send(JSON.stringify(over));
-        console.log("player a wins");
-      } catch (e) {
-        console.log("Player B closing: " + e);
-      }
-
-      console.log("we getting there");
-      
-      
-        gameObj.playerA.close();
-        gameObj.playerA = null;
-        gameObj.playerB.send(JSON.stringify(over));
-        gameObj.playerB = null;*/
-      
-      
-
-      
+      gameObj.playerB.send(JSON.stringify(over));      
     }
-  });
 });
 
 server.listen(port);
