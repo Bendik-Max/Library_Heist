@@ -26,7 +26,7 @@ game.prototype.getGameID = function(){
 }
 
 game.prototype.getCode = function(){
-    return this.code;
+  return this.code;
 }
 
 game.prototype.setCode = function(w) {
